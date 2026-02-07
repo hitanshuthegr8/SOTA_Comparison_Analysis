@@ -1,0 +1,1696 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Ideation Pipeline | AI-Powered Research Synthesis</title>
+    <meta name="description"
+        content="Enterprise-grade AI research synthesis platform for comparative analysis and novel method generation.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* =====================================================
+           ENTERPRISE COLOR SYSTEM
+           ===================================================== */
+        :root {
+            /* Base Colors */
+            --bg-deep: #0F172A;
+            --bg-gradient: linear-gradient(135deg, #1E1B4B 0%, #312E81 100%);
+
+            /* Surface Colors */
+            --surface-card: rgba(255, 255, 255, 0.04);
+            --surface-elevated: rgba(255, 255, 255, 0.06);
+            --surface-border: rgba(255, 255, 255, 0.08);
+            --surface-border-hover: rgba(255, 255, 255, 0.12);
+
+            /* Accent Colors */
+            --accent-primary: #6366F1;
+            --accent-secondary: #8B5CF6;
+            --accent-gradient: linear-gradient(90deg, #6366F1, #8B5CF6);
+
+            /* Semantic Colors */
+            --success: #10B981;
+            --warning: #FB7185;
+            --info: #3B82F6;
+
+            /* Text Colors */
+            --text-primary: #F8FAFC;
+            --text-secondary: #CBD5E1;
+            --text-muted: #94A3B8;
+            --text-dim: #64748B;
+
+            /* Shadows */
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.15);
+            --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.25);
+            --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.35);
+
+            /* Spacing */
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-2xl: 48px;
+            --space-3xl: 64px;
+
+            /* Border Radius */
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+        }
+
+        /* =====================================================
+           RESET & BASE
+           ===================================================== */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg-deep);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Subtle background gradient overlay */
+        .bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg-gradient);
+            opacity: 0.4;
+            z-index: -1;
+        }
+
+        /* =====================================================
+           LAYOUT
+           ===================================================== */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 var(--space-lg);
+        }
+
+        .section {
+            padding: var(--space-3xl) 0;
+        }
+
+        /* =====================================================
+           TYPOGRAPHY
+           ===================================================== */
+        .title-xl {
+            font-size: 40px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+        }
+
+        .title-lg {
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            color: var(--text-primary);
+        }
+
+        .title-md {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .text-body {
+            font-size: 15px;
+            font-weight: 400;
+            color: var(--text-secondary);
+        }
+
+        .text-meta {
+            font-size: 13px;
+            font-weight: 400;
+            color: var(--text-muted);
+        }
+
+        .text-dim {
+            color: var(--text-dim);
+        }
+
+        /* =====================================================
+           HEADER
+           ===================================================== */
+        .header {
+            padding: var(--space-xl) 0;
+            border-bottom: 1px solid var(--surface-border);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        .header-icon {
+            width: 44px;
+            height: 44px;
+            background: var(--accent-gradient);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+
+        .header-text h1 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+
+        .header-text p {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-sm) var(--space-md);
+            background: var(--surface-card);
+            border: 1px solid var(--surface-border);
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+        }
+
+        .status-dot.disconnected {
+            background: var(--warning);
+        }
+
+        /* =====================================================
+           PROGRESS TRACKER
+           ===================================================== */
+        .progress-tracker {
+            padding: var(--space-xl) 0;
+            border-bottom: 1px solid var(--surface-border);
+        }
+
+        .progress-steps {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+        }
+
+        .progress-step {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-sm) var(--space-md);
+            background: var(--surface-card);
+            border: 1px solid var(--surface-border);
+            border-radius: 100px;
+            font-size: 13px;
+            color: var(--text-muted);
+            transition: all 0.2s ease;
+        }
+
+        .progress-step.active {
+            background: rgba(99, 102, 241, 0.15);
+            border-color: rgba(99, 102, 241, 0.4);
+            color: var(--accent-primary);
+        }
+
+        .progress-step.completed {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: rgba(16, 185, 129, 0.3);
+            color: var(--success);
+        }
+
+        .progress-step .step-icon {
+            font-size: 14px;
+        }
+
+        .progress-connector {
+            width: 40px;
+            height: 1px;
+            background: var(--surface-border);
+        }
+
+        .progress-connector.active {
+            background: linear-gradient(90deg, var(--success), var(--accent-primary));
+        }
+
+        /* =====================================================
+           SOTA SEARCH SECTION
+           ===================================================== */
+        .sota-section {
+            padding: var(--space-2xl) 0;
+        }
+
+        .sota-card {
+            background: var(--surface-card);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--surface-border);
+            border-radius: var(--radius-xl);
+            padding: var(--space-xl);
+        }
+
+        .sota-header {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            margin-bottom: var(--space-lg);
+        }
+
+        .sota-header-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .sota-input-group {
+            display: flex;
+            gap: var(--space-md);
+        }
+
+        .sota-input {
+            flex: 1;
+            padding: var(--space-md) var(--space-lg);
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--surface-border);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 15px;
+            transition: all 0.2s ease;
+        }
+
+        .sota-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        .sota-input::placeholder {
+            color: var(--text-dim);
+        }
+
+        /* =====================================================
+           BUTTONS
+           ===================================================== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-sm);
+            padding: var(--space-md) var(--space-xl);
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 500;
+            border: none;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: var(--accent-gradient);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            filter: brightness(1.1);
+            transform: translateY(-1px);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: var(--surface-card);
+            border: 1px solid var(--surface-border);
+            color: var(--text-secondary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--surface-elevated);
+            border-color: var(--surface-border-hover);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            filter: brightness(1.1);
+        }
+
+        .btn-lg {
+            padding: var(--space-lg) var(--space-2xl);
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .btn-full {
+            width: 100%;
+        }
+
+        .btn .spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* =====================================================
+           UPLOAD SECTION
+           ===================================================== */
+        .upload-section {
+            padding: var(--space-2xl) 0;
+        }
+
+        .upload-card {
+            background: var(--surface-card);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--surface-border);
+            border-radius: var(--radius-xl);
+            padding: var(--space-xl);
+        }
+
+        .upload-header {
+            text-align: center;
+            margin-bottom: var(--space-xl);
+        }
+
+        .upload-header h2 {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: var(--space-sm);
+        }
+
+        .upload-header p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .upload-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-lg);
+            margin-bottom: var(--space-xl);
+        }
+
+        .upload-panel {
+            background: rgba(0, 0, 0, 0.2);
+            border: 2px dashed var(--surface-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-2xl) var(--space-xl);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .upload-panel:hover {
+            border-color: var(--accent-primary);
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        .upload-panel.has-file {
+            border-style: solid;
+            border-color: var(--success);
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        .upload-panel-icon {
+            font-size: 32px;
+            margin-bottom: var(--space-md);
+            opacity: 0.7;
+        }
+
+        .upload-panel-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: var(--space-xs);
+            color: var(--text-primary);
+        }
+
+        .upload-panel-subtitle {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: var(--space-md);
+        }
+
+        .upload-panel-label {
+            display: inline-block;
+            padding: var(--space-xs) var(--space-md);
+            background: var(--surface-card);
+            border: 1px solid var(--surface-border);
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .file-chip {
+            display: none;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-sm) var(--space-md);
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            color: var(--success);
+            margin-top: var(--space-md);
+        }
+
+        .upload-panel.has-file .file-chip {
+            display: inline-flex;
+        }
+
+        .upload-panel.has-file .upload-panel-subtitle {
+            display: none;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        /* =====================================================
+           RESULTS SECTION
+           ===================================================== */
+        .results-section {
+            display: none;
+            padding: var(--space-2xl) 0;
+        }
+
+        .results-section.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .results-header {
+            margin-bottom: var(--space-2xl);
+        }
+
+        .results-header h2 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: var(--space-sm);
+        }
+
+        .results-header p {
+            color: var(--text-muted);
+            font-size: 15px;
+        }
+
+        /* Result Cards */
+        .result-card {
+            background: var(--surface-card);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--surface-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            margin-bottom: var(--space-lg);
+            box-shadow: var(--shadow-md);
+        }
+
+        .result-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--space-lg);
+            padding-bottom: var(--space-md);
+            border-bottom: 1px solid var(--surface-border);
+        }
+
+        .result-card-header-left {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        .result-card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .result-card-icon.paper {
+            background: rgba(59, 130, 246, 0.15);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .result-card-icon.weakness {
+            background: rgba(251, 113, 133, 0.15);
+            border: 1px solid rgba(251, 113, 133, 0.3);
+        }
+
+        .result-card-icon.method {
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .result-card-icon.comparison {
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+
+        .result-card-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .result-card-subtitle {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-xs);
+            padding: var(--space-xs) var(--space-md);
+            background: var(--surface-card);
+            border: 1px solid var(--surface-border);
+            border-radius: 100px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .badge.success {
+            background: rgba(16, 185, 129, 0.15);
+            border-color: rgba(16, 185, 129, 0.3);
+            color: var(--success);
+        }
+
+        /* Papers Grid */
+        .papers-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-lg);
+        }
+
+        .paper-summary-card {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+        }
+
+        .paper-label {
+            display: inline-block;
+            padding: var(--space-xs) var(--space-sm);
+            background: rgba(59, 130, 246, 0.15);
+            border-radius: var(--radius-sm);
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--info);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--space-sm);
+        }
+
+        .paper-label.b {
+            background: rgba(139, 92, 246, 0.15);
+            color: var(--accent-secondary);
+        }
+
+        .paper-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+            line-height: 1.4;
+        }
+
+        /* Weakness List */
+        .weakness-list {
+            list-style: none;
+        }
+
+        .weakness-item {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-md);
+            padding: var(--space-md);
+            background: rgba(0, 0, 0, 0.15);
+            border-radius: var(--radius-sm);
+            margin-bottom: var(--space-sm);
+            border-left: 3px solid var(--warning);
+        }
+
+        .weakness-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .weakness-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--warning);
+            border-radius: 50%;
+            margin-top: 6px;
+            flex-shrink: 0;
+        }
+
+        .weakness-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* Synthesized Method */
+        .method-card {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(139, 92, 246, 0.08));
+            border: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        .method-name {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: var(--space-lg);
+        }
+
+        .method-section {
+            margin-bottom: var(--space-xl);
+        }
+
+        .method-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .method-section-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--space-md);
+        }
+
+        .method-section p {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            max-width: 800px;
+        }
+
+        .component-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-md);
+        }
+
+        .component-card {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            border-left: 3px solid var(--success);
+        }
+
+        .component-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: var(--space-xs);
+        }
+
+        .component-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* Comparison Table */
+        .comparison-table-wrapper {
+            overflow-x: auto;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .comparison-table th {
+            padding: var(--space-md) var(--space-lg);
+            background: rgba(0, 0, 0, 0.3);
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--surface-border);
+        }
+
+        .comparison-table th:first-child {
+            border-radius: var(--radius-md) 0 0 0;
+        }
+
+        .comparison-table th:last-child {
+            border-radius: 0 var(--radius-md) 0 0;
+        }
+
+        .comparison-table td {
+            padding: var(--space-md) var(--space-lg);
+            background: rgba(0, 0, 0, 0.15);
+            border-bottom: 1px solid var(--surface-border);
+            color: var(--text-secondary);
+            vertical-align: top;
+        }
+
+        .comparison-table tr:last-child td:first-child {
+            border-radius: 0 0 0 var(--radius-md);
+        }
+
+        .comparison-table tr:last-child td:last-child {
+            border-radius: 0 0 var(--radius-md) 0;
+        }
+
+        .comparison-table tr:hover td {
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        .aspect-name {
+            font-weight: 600;
+            color: var(--accent-primary);
+        }
+
+        /* SOTA Results */
+        .sota-results {
+            display: none;
+            margin-top: var(--space-xl);
+        }
+
+        .sota-results.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .sota-paper-card {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--surface-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            margin-bottom: var(--space-md);
+        }
+
+        .sota-rank {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-xs);
+            padding: var(--space-xs) var(--space-md);
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--success);
+            margin-bottom: var(--space-md);
+        }
+
+        .sota-paper-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: var(--space-sm);
+            line-height: 1.4;
+        }
+
+        .sota-paper-meta {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: var(--space-md);
+        }
+
+        .sota-paper-abstract {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: var(--space-lg);
+        }
+
+        .sota-metrics {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-md);
+        }
+
+        .sota-metric {
+            padding: var(--space-sm) var(--space-md);
+            background: var(--surface-card);
+            border: 1px solid var(--surface-border);
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+        }
+
+        .sota-metric-label {
+            color: var(--text-muted);
+            margin-right: var(--space-xs);
+        }
+
+        .sota-metric-value {
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        .sota-links {
+            display: flex;
+            gap: var(--space-sm);
+        }
+
+        .sota-link {
+            padding: var(--space-sm) var(--space-md);
+            background: var(--surface-card);
+            border: 1px solid var(--surface-border);
+            border-radius: var(--radius-sm);
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 13px;
+            transition: all 0.2s ease;
+        }
+
+        .sota-link:hover {
+            background: var(--surface-elevated);
+            color: var(--accent-primary);
+        }
+
+        /* Loading State */
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .loading-content {
+            text-align: center;
+            max-width: 400px;
+        }
+
+        .loading-icon {
+            font-size: 48px;
+            margin-bottom: var(--space-lg);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.7;
+                transform: scale(0.98);
+            }
+        }
+
+        .loading-text {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-sm);
+        }
+
+        .loading-subtext {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .loading-dots {
+            display: inline-block;
+        }
+
+        .loading-dots::after {
+            content: '';
+            animation: dots 1.5s steps(4) infinite;
+        }
+
+        @keyframes dots {
+            0% {
+                content: '';
+            }
+
+            25% {
+                content: '.';
+            }
+
+            50% {
+                content: '..';
+            }
+
+            75% {
+                content: '...';
+            }
+        }
+
+        /* Error State */
+        .error-card {
+            background: rgba(251, 113, 133, 0.1);
+            border: 1px solid rgba(251, 113, 133, 0.2);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            text-align: center;
+        }
+
+        .error-card h3 {
+            color: var(--warning);
+            margin-bottom: var(--space-sm);
+        }
+
+        .error-card p {
+            color: var(--text-secondary);
+        }
+
+        /* Footer */
+        .footer {
+            padding: var(--space-xl) 0;
+            border-top: 1px solid var(--surface-border);
+            text-align: center;
+        }
+
+        .footer p {
+            font-size: 13px;
+            color: var(--text-dim);
+        }
+
+        .footer a {
+            color: var(--accent-primary);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Divider */
+        .divider {
+            height: 1px;
+            background: var(--surface-border);
+            margin: var(--space-xl) 0;
+        }
+
+        .section-label {
+            text-align: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: var(--space-lg);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .upload-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .papers-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .progress-steps {
+                flex-wrap: wrap;
+                gap: var(--space-sm);
+            }
+
+            .progress-connector {
+                display: none;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: var(--space-md);
+                text-align: center;
+            }
+
+            .sota-input-group {
+                flex-direction: column;
+            }
+
+            .comparison-table {
+                font-size: 13px;
+            }
+
+            .comparison-table th,
+            .comparison-table td {
+                padding: var(--space-sm) var(--space-md);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-overlay"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="header-left">
+                    <div class="header-icon">🧠</div>
+                    <div class="header-text">
+                        <h1>Research Ideation Pipeline</h1>
+                        <p>AI-powered comparative analysis and research synthesis</p>
+                    </div>
+                </div>
+                <div class="status-indicator" id="apiStatus">
+                    <span class="status-dot disconnected"></span>
+                    <span>Connecting...</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Progress Tracker -->
+    <div class="progress-tracker">
+        <div class="container">
+            <div class="progress-steps">
+                <div class="progress-step" id="step1">
+                    <span class="step-icon">📄</span>
+                    <span>Parse Papers</span>
+                </div>
+                <div class="progress-connector"></div>
+                <div class="progress-step" id="step2">
+                    <span class="step-icon">🔍</span>
+                    <span>Extract Weaknesses</span>
+                </div>
+                <div class="progress-connector"></div>
+                <div class="progress-step" id="step3">
+                    <span class="step-icon">⚡</span>
+                    <span>Pattern Analysis</span>
+                </div>
+                <div class="progress-connector"></div>
+                <div class="progress-step" id="step4">
+                    <span class="step-icon">💡</span>
+                    <span>Synthesis</span>
+                </div>
+                <div class="progress-connector"></div>
+                <div class="progress-step" id="step5">
+                    <span class="step-icon">📊</span>
+                    <span>Comparative Evaluation</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- SOTA Search Section -->
+        <section class="sota-section">
+            <div class="sota-card">
+                <div class="sota-header">
+                    <div class="sota-header-icon">🔍</div>
+                    <div>
+                        <div class="title-md">Discover SOTA Papers</div>
+                        <div class="text-meta">Search ArXiv for top state-of-the-art research by topic</div>
+                    </div>
+                </div>
+                <div class="sota-input-group">
+                    <input type="text" class="sota-input" id="sotaTopicInput"
+                        placeholder="Enter research topic (e.g., transformer attention mechanisms)">
+                    <button class="btn btn-success" id="sotaSearchBtn">
+                        <span class="btn-text">Search SOTA</span>
+                        <div class="spinner" style="display: none;"></div>
+                    </button>
+                </div>
+                <div class="sota-results" id="sotaResults"></div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+        <p class="section-label">Or upload papers for comparative analysis</p>
+
+        <!-- Upload Section -->
+        <section class="upload-section">
+            <div class="upload-card">
+                <div class="upload-header">
+                    <h2>Comparative Paper Analysis</h2>
+                    <p>Upload two research papers to extract weaknesses and synthesize a novel method</p>
+                </div>
+                <div class="upload-grid">
+                    <label class="upload-panel" for="paperA" id="uploadCardA">
+                        <div class="upload-panel-icon">📄</div>
+                        <div class="upload-panel-title">Paper A — Source Benchmark</div>
+                        <div class="upload-panel-subtitle">Drop PDF or click to browse</div>
+                        <span class="upload-panel-label">Primary reference</span>
+                        <div class="file-chip" id="fileChipA">
+                            <span>✓</span>
+                            <span id="fileNameA"></span>
+                        </div>
+                        <input type="file" id="paperA" accept=".pdf,.txt">
+                    </label>
+                    <label class="upload-panel" for="paperB" id="uploadCardB">
+                        <div class="upload-panel-icon">📄</div>
+                        <div class="upload-panel-title">Paper B — Comparative Benchmark</div>
+                        <div class="upload-panel-subtitle">Drop PDF or click to browse</div>
+                        <span class="upload-panel-label">Comparison target</span>
+                        <div class="file-chip" id="fileChipB">
+                            <span>✓</span>
+                            <span id="fileNameB"></span>
+                        </div>
+                        <input type="file" id="paperB" accept=".pdf,.txt">
+                    </label>
+                </div>
+                <button class="btn btn-primary btn-lg btn-full" id="analyzeBtn" disabled>
+                    <span class="btn-text">Generate Synthesized Method</span>
+                    <div class="spinner" style="display: none;"></div>
+                </button>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section class="results-section" id="resultsSection">
+            <div class="results-header">
+                <h2>Comparative Research Intelligence</h2>
+                <p>AI-generated analysis and synthesized research framework</p>
+            </div>
+
+            <!-- Paper Summaries -->
+            <div id="paperSummaries"></div>
+
+            <!-- Weaknesses -->
+            <div id="weaknessCards"></div>
+
+            <!-- Proposed Method -->
+            <div id="proposedMethodCard"></div>
+
+            <!-- Comparison Table -->
+            <div id="comparisonCard"></div>
+        </section>
+
+        <footer class="footer">
+            <p>Powered by <a href="https://groq.com" target="_blank">Groq</a> LLaMA 3.3 70B</p>
+        </footer>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="loading-icon">🧠</div>
+            <div class="loading-text" id="loadingText">Parsing structural components</div>
+            <div class="loading-subtext">Please wait<span class="loading-dots"></span></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:9001';
+
+        // DOM Elements
+        const paperAInput = document.getElementById('paperA');
+        const paperBInput = document.getElementById('paperB');
+        const uploadCardA = document.getElementById('uploadCardA');
+        const uploadCardB = document.getElementById('uploadCardB');
+        const fileNameA = document.getElementById('fileNameA');
+        const fileNameB = document.getElementById('fileNameB');
+        const analyzeBtn = document.getElementById('analyzeBtn');
+        const resultsSection = document.getElementById('resultsSection');
+        const apiStatus = document.getElementById('apiStatus');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const loadingText = document.getElementById('loadingText');
+
+        // SOTA Elements
+        const sotaTopicInput = document.getElementById('sotaTopicInput');
+        const sotaSearchBtn = document.getElementById('sotaSearchBtn');
+        const sotaResults = document.getElementById('sotaResults');
+
+        // Loading messages
+        const loadingMessages = [
+            'Parsing structural components',
+            'Extracting methodological weaknesses',
+            'Analyzing research patterns',
+            'Synthesizing comparative insights',
+            'Generating optimized framework'
+        ];
+
+        let loadingMessageIndex = 0;
+        let loadingInterval;
+
+        function startLoadingAnimation() {
+            loadingOverlay.classList.add('active');
+            loadingMessageIndex = 0;
+            loadingText.textContent = loadingMessages[0];
+            loadingInterval = setInterval(() => {
+                loadingMessageIndex = (loadingMessageIndex + 1) % loadingMessages.length;
+                loadingText.textContent = loadingMessages[loadingMessageIndex];
+            }, 3000);
+        }
+
+        function stopLoadingAnimation() {
+            loadingOverlay.classList.remove('active');
+            clearInterval(loadingInterval);
+        }
+
+        // Check API status
+        async function checkApiStatus() {
+            try {
+                const response = await fetch(`${API_BASE}/health`);
+                const data = await response.json();
+                const statusDot = apiStatus.querySelector('.status-dot');
+                const statusText = apiStatus.querySelector('span:last-child');
+
+                if (data.status === 'healthy' && data.groq_api_configured) {
+                    statusDot.classList.remove('disconnected');
+                    statusText.textContent = 'API Connected';
+                } else {
+                    statusDot.classList.add('disconnected');
+                    statusText.textContent = 'API Key Missing';
+                }
+            } catch (error) {
+                const statusDot = apiStatus.querySelector('.status-dot');
+                const statusText = apiStatus.querySelector('span:last-child');
+                statusDot.classList.add('disconnected');
+                statusText.textContent = 'API Offline';
+            }
+        }
+
+        checkApiStatus();
+
+        // File handling
+        function handleFileSelect(input, card, fileNameEl) {
+            input.addEventListener('change', () => {
+                if (input.files.length > 0) {
+                    card.classList.add('has-file');
+                    fileNameEl.textContent = input.files[0].name;
+                    checkFilesReady();
+                } else {
+                    card.classList.remove('has-file');
+                    fileNameEl.textContent = '';
+                    checkFilesReady();
+                }
+            });
+        }
+
+        handleFileSelect(paperAInput, uploadCardA, fileNameA);
+        handleFileSelect(paperBInput, uploadCardB, fileNameB);
+
+        function checkFilesReady() {
+            analyzeBtn.disabled = !(paperAInput.files.length > 0 && paperBInput.files.length > 0);
+        }
+
+        // Analysis
+        analyzeBtn.addEventListener('click', async () => {
+            const formData = new FormData();
+            formData.append('paper_a', paperAInput.files[0]);
+            formData.append('paper_b', paperBInput.files[0]);
+
+            analyzeBtn.disabled = true;
+            analyzeBtn.querySelector('.btn-text').style.display = 'none';
+            analyzeBtn.querySelector('.spinner').style.display = 'block';
+            startLoadingAnimation();
+
+            try {
+                const response = await fetch(`${API_BASE}/analyze`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.error) {
+                    showError(data.error);
+                } else {
+                    displayResults(data);
+                }
+            } catch (error) {
+                showError(`Connection error: ${error.message}`);
+            } finally {
+                stopLoadingAnimation();
+                analyzeBtn.disabled = false;
+                analyzeBtn.querySelector('.btn-text').style.display = 'inline';
+                analyzeBtn.querySelector('.spinner').style.display = 'none';
+            }
+        });
+
+        function showError(message) {
+            resultsSection.classList.add('active');
+            resultsSection.innerHTML = `
+                <div class="error-card">
+                    <h3>Analysis Error</h3>
+                    <p>${message}</p>
+                </div>
+            `;
+        }
+
+        function displayResults(data) {
+            resultsSection.classList.add('active');
+
+            // Safe data extraction with defaults
+            const paperA = data.paper_a || {};
+            const paperB = data.paper_b || {};
+            const weaknessesA = data.weaknesses_a || [];
+            const weaknessesB = data.weaknesses_b || [];
+            const method = data.proposed_method || {
+                method_name: 'Synthesized Method',
+                core_idea: 'Analysis in progress...',
+                components: [],
+                addresses_weaknesses: 'No data available'
+            };
+            const comparison = data.comparison_table || data.comparison || {};
+
+            // Paper Summaries
+            document.getElementById('paperSummaries').innerHTML = `
+                <div class="result-card">
+                    <div class="result-card-header">
+                        <div class="result-card-header-left">
+                            <div class="result-card-icon paper">📄</div>
+                            <div>
+                                <div class="result-card-title">Paper Analysis</div>
+                                <div class="result-card-subtitle">Source documents processed</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="papers-grid">
+                        <div class="paper-summary-card">
+                            <span class="paper-label">Paper A</span>
+                            <div class="paper-title">${paperA.title || 'Untitled Document'}</div>
+                        </div>
+                        <div class="paper-summary-card">
+                            <span class="paper-label b">Paper B</span>
+                            <div class="paper-title">${paperB.title || 'Untitled Document'}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Weaknesses
+            document.getElementById('weaknessCards').innerHTML = `
+                <div class="result-card">
+                    <div class="result-card-header">
+                        <div class="result-card-header-left">
+                            <div class="result-card-icon weakness">⚠</div>
+                            <div>
+                                <div class="result-card-title">Identified Weaknesses</div>
+                                <div class="result-card-subtitle">${weaknessesA.length + weaknessesB.length} limitations extracted</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="papers-grid">
+                        <div>
+                            <div class="text-meta" style="margin-bottom: var(--space-md);">Paper A Weaknesses</div>
+                            <ul class="weakness-list">
+                                ${weaknessesA.length > 0 ? weaknessesA.map(w => `
+                                    <li class="weakness-item">
+                                        <span class="weakness-dot"></span>
+                                        <span class="weakness-text">${w}</span>
+                                    </li>
+                                `).join('') : '<li class="weakness-item"><span class="weakness-text">No weaknesses identified</span></li>'}
+                            </ul>
+                        </div>
+                        <div>
+                            <div class="text-meta" style="margin-bottom: var(--space-md);">Paper B Weaknesses</div>
+                            <ul class="weakness-list">
+                                ${weaknessesB.length > 0 ? weaknessesB.map(w => `
+                                    <li class="weakness-item">
+                                        <span class="weakness-dot"></span>
+                                        <span class="weakness-text">${w}</span>
+                                    </li>
+                                `).join('') : '<li class="weakness-item"><span class="weakness-text">No weaknesses identified</span></li>'}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Proposed Method
+            const components = method.components || [];
+            document.getElementById('proposedMethodCard').innerHTML = `
+                <div class="result-card method-card">
+                    <div class="result-card-header">
+                        <div class="result-card-header-left">
+                            <div class="result-card-icon method">💡</div>
+                            <div>
+                                <div class="result-card-title">AI-Synthesized Framework</div>
+                                <div class="result-card-subtitle">Novel method addressing identified gaps</div>
+                            </div>
+                        </div>
+                        <span class="badge success">AI Generated</span>
+                    </div>
+                    <h3 class="method-name">${method.method_name || 'Synthesized Method'}</h3>
+                    
+                    <div class="method-section">
+                        <div class="method-section-title">Core Idea</div>
+                        <p>${method.core_idea || 'Analysis in progress...'}</p>
+                    </div>
+                    
+                    <div class="method-section">
+                        <div class="method-section-title">Key Components</div>
+                        <div class="component-grid">
+                            ${components.length > 0 ? components.map(c => {
+                const parts = (c || '').includes(':') ? c.split(':') : [c || 'Component', ''];
+                return `
+                                    <div class="component-card">
+                                        <div class="component-title">${parts[0]}</div>
+                                        ${parts[1] ? `<div class="component-desc">${parts[1].trim()}</div>` : ''}
+                                    </div>
+                                `;
+            }).join('') : '<div class="component-card"><div class="component-title">No components generated</div></div>'}
+                        </div>
+                    </div>
+                    
+                    <div class="method-section">
+                        <div class="method-section-title">Weakness Mitigation</div>
+                        <p>${method.addresses_weaknesses || 'No mitigation strategy available'}</p>
+                    </div>
+                </div>
+            `;
+
+            // Comparison Table
+            const comparisonEntries = Object.entries(comparison);
+            document.getElementById('comparisonCard').innerHTML = `
+                <div class="result-card">
+                    <div class="result-card-header">
+                        <div class="result-card-header-left">
+                            <div class="result-card-icon comparison">📊</div>
+                            <div>
+                                <div class="result-card-title">Comparative Analysis Matrix</div>
+                                <div class="result-card-subtitle">Multi-dimensional comparison</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="comparison-table-wrapper">
+                        <table class="comparison-table">
+                            <thead>
+                                <tr>
+                                    <th>Aspect</th>
+                                    <th>Paper A</th>
+                                    <th>Paper B</th>
+                                    <th>Synthesized Framework</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${comparisonEntries.length > 0 ? comparisonEntries.map(([aspect, values]) => {
+                const v = values || {};
+                return `
+                                        <tr>
+                                            <td class="aspect-name">${aspect}</td>
+                                            <td>${v.paper_a || 'N/A'}</td>
+                                            <td>${v.paper_b || 'N/A'}</td>
+                                            <td>${v.proposed || 'N/A'}</td>
+                                        </tr>
+                                    `;
+            }).join('') : `
+                                    <tr>
+                                        <td colspan="4" style="text-align: center; color: var(--text-muted);">
+                                            No comparison data available
+                                        </td>
+                                    </tr>
+                                `}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+
+            // Scroll to results
+            resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // SOTA Search
+        sotaSearchBtn.addEventListener('click', async () => {
+            const topic = sotaTopicInput.value.trim();
+            if (!topic) {
+                alert('Please enter a research topic');
+                return;
+            }
+
+            sotaSearchBtn.disabled = true;
+            sotaSearchBtn.querySelector('.btn-text').style.display = 'none';
+            sotaSearchBtn.querySelector('.spinner').style.display = 'block';
+            sotaResults.classList.remove('active');
+
+            try {
+                const response = await fetch(`${API_BASE}/sota`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ topic, top_k: 2, max_results: 20 })
+                });
+
+                const data = await response.json();
+
+                if (data.error) {
+                    displaySotaError(data.error);
+                } else {
+                    displaySotaResults(data);
+                }
+            } catch (error) {
+                displaySotaError(`Connection error: ${error.message}`);
+            } finally {
+                sotaSearchBtn.disabled = false;
+                sotaSearchBtn.querySelector('.btn-text').style.display = 'inline';
+                sotaSearchBtn.querySelector('.spinner').style.display = 'none';
+            }
+        });
+
+        sotaTopicInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sotaSearchBtn.click();
+        });
+
+        function displaySotaError(message) {
+            sotaResults.classList.add('active');
+            sotaResults.innerHTML = `
+                <div class="error-card">
+                    <h3>Search Error</h3>
+                    <p>${message}</p>
+                </div>
+            `;
+        }
+
+        function displaySotaResults(data) {
+            sotaResults.classList.add('active');
+
+            if (!data.sota_papers || data.sota_papers.length === 0) {
+                sotaResults.innerHTML = `
+                    <div class="sota-paper-card">
+                        <p class="text-secondary" style="text-align: center;">
+                            No papers found for this topic. Try a different search term.
+                        </p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = `
+                <div class="text-meta" style="margin-bottom: var(--space-md);">
+                    Found ${data.total_found} papers • Showing top ${data.sota_papers.length} SOTA papers
+                </div>
+            `;
+
+            data.sota_papers.forEach(paper => {
+                const authors = paper.authors ? paper.authors.slice(0, 3).join(', ') + (paper.authors.length > 3 ? ' et al.' : '') : 'Unknown';
+                const citations = paper.metrics?.citation_count || 0;
+                const relevance = Math.round((paper.relevance_score || 0) * 100);
+                const finalScore = Math.round((paper.final_score || 0) * 100);
+
+                html += `
+                    <div class="sota-paper-card">
+                        <div class="sota-rank">🏆 SOTA Rank #${paper.sota_rank}</div>
+                        <div class="sota-paper-title">${paper.title}</div>
+                        <div class="sota-paper-meta">${authors} • ${paper.published_date || 'Unknown date'}</div>
+                        <div class="sota-paper-abstract">${paper.abstract}</div>
+                        <div class="sota-metrics">
+                            <span class="sota-metric">
+                                <span class="sota-metric-label">Relevance</span>
+                                <span class="sota-metric-value">${relevance}%</span>
+                            </span>
+                            <span class="sota-metric">
+                                <span class="sota-metric-label">Citations</span>
+                                <span class="sota-metric-value">${citations}</span>
+                            </span>
+                            <span class="sota-metric">
+                                <span class="sota-metric-label">Recency</span>
+                                <span class="sota-metric-value">${Math.round((paper.metrics?.recency_score || 0) * 100)}%</span>
+                            </span>
+                            <span class="sota-metric">
+                                <span class="sota-metric-label">Final Score</span>
+                                <span class="sota-metric-value">${finalScore}%</span>
+                            </span>
+                        </div>
+                        ${paper.relevance_reason ? `<p class="text-meta" style="font-style: italic; margin-bottom: var(--space-md);">"${paper.relevance_reason}"</p>` : ''}
+                        <div class="sota-links">
+                            ${paper.url ? `<a href="${paper.url}" target="_blank" class="sota-link">📄 View on ArXiv</a>` : ''}
+                            ${paper.pdf_url ? `<a href="${paper.pdf_url}" target="_blank" class="sota-link">📥 Download PDF</a>` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+
+            sotaResults.innerHTML = html;
+        }
+    </script>
+</body>
+
+</html>
